@@ -1,8 +1,10 @@
+import {InvestmentCalculator} from "./pages/InvestmentCalculator.tsx";
+
 function App() {
 
   return (
     <>
-        Hello
+        <InvestmentCalculator />
     </>
   )
 }
