@@ -2,11 +2,11 @@ import {InvestmentCalculator} from "./pages/InvestmentCalculator.tsx";
 
 function App() {
 
-  return (
-    <>
-        <InvestmentCalculator />
-    </>
-  )
+    return (
+        <>
+            <InvestmentCalculator />
+        </>
+    )
 }
 
 export default App

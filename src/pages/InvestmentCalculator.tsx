@@ -1,14 +1,18 @@
 import InputField from "../components/InputField.tsx";
 import {useState} from "react";
 import {Button} from "@mui/material";
-
+import {calculateMonthlyTable} from "../utilities/InvestmentCalculations.tsx";
 
 export function InvestmentCalculator() {
 
-    const [ initialInvestment, setInitialInvestment ] = useState<number>(0);
-    const [ monthlyAddition, setMonthlyAddition ] = useState<number>(0);
-    const [ interestRate, setInterestRate ] = useState<number>(0);
-    const [ yearsToGrow, setYearsToGrow ] = useState<number>(0);
+    const [ initialInvestment, setInitialInvestment ] = useState<number>(1000);
+    const [ monthlyAddition, setMonthlyAddition ] = useState<number>(500);
+    const [ interestRate, setInterestRate ] = useState<number>(7);
+    const [ yearsToGrow, setYearsToGrow ] = useState<number>(1);
+
+    const computeAndShowInterestTable = () => {
+        calculateMonthlyTable(initialInvestment, monthlyAddition, interestRate, yearsToGrow);
+    }
 
     return (
         <>
@@ -45,7 +49,7 @@ export function InvestmentCalculator() {
                 tooltipText={"How long you will hold your investment"}
             />
             <Button
-
+                onClick={() => computeAndShowInterestTable()}
             >
                 Calculate
             </Button>
