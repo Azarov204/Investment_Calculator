@@ -1,5 +1,5 @@
 
-type SingleMonth = {
+export interface SingleMonth {
     month: number,
     monthlyInvestment: number,
     totalInvestment: number,
@@ -12,11 +12,11 @@ export function calculateMonthlyTable(initial: number, regAddition: number, rate
 
     const resultTable: Array<SingleMonth> = [];
 
-    let monthlyInvestment: number = initial + regAddition;
-    let totalInvestment: number = monthlyInvestment;
+    let monthlyInvestment: number = formatMoney(initial + regAddition);
+    let totalInvestment: number = formatMoney(monthlyInvestment);
     let monthlyInterest: number = calculateMonthlyInterest(initial, rate);
-    let totalInterest: number = monthlyInterest;
-    let totalValue: number = totalInvestment + monthlyInterest;
+    let totalInterest: number = formatMoney(monthlyInterest);
+    let totalValue: number = formatMoney(totalInvestment + monthlyInterest);
 
     const firstMonth: SingleMonth = {
         month: 1,
@@ -31,11 +31,11 @@ export function calculateMonthlyTable(initial: number, regAddition: number, rate
     for (let i = 2; i <= years*12; i++) {
         const prevMonth: SingleMonth = resultTable[resultTable.length - 1]
 
-        monthlyInvestment = regAddition;
-        totalInvestment = prevMonth.totalInvestment + monthlyInvestment;
+        monthlyInvestment = formatMoney(regAddition);
+        totalInvestment = formatMoney(prevMonth.totalInvestment + monthlyInvestment);
         monthlyInterest = calculateMonthlyInterest(prevMonth.totalValue, rate);
-        totalInterest = prevMonth.totalInterest + monthlyInterest;
-        totalValue = totalInvestment + totalInterest;
+        totalInterest = formatMoney(prevMonth.totalInterest + monthlyInterest);
+        totalValue = formatMoney(totalInvestment + totalInterest)
 
         const currentMonth: SingleMonth = {
             month: i,
@@ -51,11 +51,17 @@ export function calculateMonthlyTable(initial: number, regAddition: number, rate
     console.log(resultTable);
     console.log("Total investment: " + resultTable[resultTable.length - 1].totalValue);
     console.log("Total interest: " + resultTable[resultTable.length - 1].totalInterest);
+
     return resultTable;
 }
 
 export function calculateMonthlyInterest(principal: number, rate: number): number {
     const monthlyInterestRate = (rate/100)/12;
     const interest = principal * monthlyInterestRate;
-    return Math.round((interest + Number.EPSILON) * 100) / 100;
+    // return Math.round((interest + Number.EPSILON) * 100) / 100;
+    return formatMoney(interest);
+}
+
+export function formatMoney(money: number) : number {
+    return parseFloat(money.toFixed(2))
 }
