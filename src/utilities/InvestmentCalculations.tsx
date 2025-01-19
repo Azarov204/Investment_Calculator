@@ -48,17 +48,12 @@ export function calculateMonthlyTable(initial: number, regAddition: number, rate
         resultTable.push(currentMonth);
     }
 
-    console.log(resultTable);
-    console.log("Total investment: " + resultTable[resultTable.length - 1].totalValue);
-    console.log("Total interest: " + resultTable[resultTable.length - 1].totalInterest);
-
     return resultTable;
 }
 
 export function calculateMonthlyInterest(principal: number, rate: number): number {
     const monthlyInterestRate = (rate/100)/12;
     const interest = principal * monthlyInterestRate;
-    // return Math.round((interest + Number.EPSILON) * 100) / 100;
     return formatMoney(interest);
 }
 
