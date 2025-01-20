@@ -1,8 +1,9 @@
 import NumberInputField from "../components/NumberInputField.tsx";
 import {useState} from "react";
-import {Button} from "@mui/material";
+import {Button, Paper} from "@mui/material";
 import {calculateMonthlyTable, SingleMonth} from "../utilities/InvestmentCalculations.tsx";
 import InvestmentTable from "../components/InvestmentTable.tsx";
+import {InvestmentGraph} from "../components/InvestmentGraph.tsx";
 
 export function InvestmentCalculator() {
 
@@ -57,6 +58,9 @@ export function InvestmentCalculator() {
             {showResults && (
                 <>
                     <InvestmentTable monthlyInvestmentData={results} />
+                    <Paper sx={{maxWidth: "40%"}}>
+                        <InvestmentGraph monthlyInvestmentData={results} />
+                    </Paper>
                 </>
             )}
         </>
