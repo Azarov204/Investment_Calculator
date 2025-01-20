@@ -8,9 +8,24 @@ export interface SingleMonth {
     totalValue: number,
 }
 
-export function calculateMonthlyTable(initial: number, regAddition: number, rate: number, years: number): Array<SingleMonth> {
+export interface MetaData {
+    totalValue: number,
+    totalInvestment: number,
+    totalInterest: number,
+    initialInvestment: number,
+    monthlyAddition: number,
+    interestRate: number,
+    years: number,
+}
 
-    const resultTable: Array<SingleMonth> = [];
+export interface InvestmentCalculatorResult {
+    monthlyData: Array<SingleMonth>;
+    metaData: MetaData;
+}
+
+export function calculateMonthlyTable(initial: number, regAddition: number, rate: number, years: number): InvestmentCalculatorResult {
+
+    const monthlyData: Array<SingleMonth> = [];
 
     let monthlyInvestment: number = formatMoney(initial + regAddition);
     let totalInvestment: number = formatMoney(monthlyInvestment);
@@ -26,10 +41,10 @@ export function calculateMonthlyTable(initial: number, regAddition: number, rate
         totalInterest,
         totalValue,
     };
-    resultTable.push(firstMonth);
+    monthlyData.push(firstMonth);
 
     for (let i = 2; i <= years*12; i++) {
-        const prevMonth: SingleMonth = resultTable[resultTable.length - 1]
+        const prevMonth: SingleMonth = monthlyData[monthlyData.length - 1]
 
         monthlyInvestment = formatMoney(regAddition);
         totalInvestment = formatMoney(prevMonth.totalInvestment + monthlyInvestment);
@@ -45,10 +60,24 @@ export function calculateMonthlyTable(initial: number, regAddition: number, rate
             totalInterest,
             totalValue,
         }
-        resultTable.push(currentMonth);
+        monthlyData.push(currentMonth);
     }
 
-    return resultTable;
+    const resultLastIndex = monthlyData.length - 1;
+    const metaData = {
+        totalValue: monthlyData[resultLastIndex].totalValue,
+        totalInvestment: monthlyData[resultLastIndex].totalInvestment,
+        totalInterest: monthlyData[resultLastIndex].totalInterest,
+        initialInvestment: initial,
+        monthlyAddition: regAddition,
+        interestRate: rate,
+        years: years,
+    }
+
+    return {
+        metaData,
+        monthlyData
+    };
 }
 
 export function calculateMonthlyInterest(principal: number, rate: number): number {

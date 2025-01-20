@@ -1,9 +1,10 @@
 import NumberInputField from "../components/NumberInputField.tsx";
 import {useState} from "react";
 import {Button, Paper} from "@mui/material";
-import {calculateMonthlyTable, SingleMonth} from "../utilities/InvestmentCalculations.tsx";
+import {calculateMonthlyTable, SingleMonth, MetaData, InvestmentCalculatorResult} from "../utilities/InvestmentCalculations.tsx";
 import InvestmentTable from "../components/InvestmentTable.tsx";
 import {InvestmentGraph} from "../components/InvestmentGraph.tsx";
+import {ResultDisplay} from "../components/ResultDisplay.tsx";
 
 export function InvestmentCalculator() {
 
@@ -12,12 +13,23 @@ export function InvestmentCalculator() {
     const [ interestRate, setInterestRate ] = useState<number>(7);
     const [ yearsToGrow, setYearsToGrow ] = useState<number>(1);
     const [ showResults, setShowResults ] = useState<boolean>(false);
-    const [ results, setResults ] = useState<SingleMonth[]>([]);
+    const [ monthlyDataResults, setMonthlyDataResults ] = useState<SingleMonth[]>([]);
+    const [ metaDataResults, setMetaDataResults ] = useState<MetaData>({
+        initialInvestment: 0,
+        interestRate: 0,
+        monthlyAddition: 0,
+        totalInterest: 0,
+        totalInvestment: 0,
+        totalValue: 0,
+        years: 0
+    });
 
     const computeAndShowInterestTable = () => {
-        setResults(calculateMonthlyTable(initialInvestment, monthlyAddition, interestRate, yearsToGrow));
+        const investmentCalculatorResults: InvestmentCalculatorResult = calculateMonthlyTable(initialInvestment, monthlyAddition, interestRate, yearsToGrow);
+        setMonthlyDataResults(investmentCalculatorResults.monthlyData);
+        setMetaDataResults(investmentCalculatorResults.metaData)
         setShowResults(true);
-        console.log(results)
+        console.log(monthlyDataResults)
     }
 
     return (
@@ -57,9 +69,10 @@ export function InvestmentCalculator() {
             </Button>
             {showResults && (
                 <>
-                    <InvestmentTable monthlyInvestmentData={results} />
+                    <ResultDisplay metaData={metaDataResults} />
+                    <InvestmentTable monthlyInvestmentData={monthlyDataResults} />
                     <Paper sx={{maxWidth: "40%"}}>
-                        <InvestmentGraph monthlyInvestmentData={results} />
+                        <InvestmentGraph monthlyInvestmentData={monthlyDataResults} />
                     </Paper>
                 </>
             )}
