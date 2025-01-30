@@ -5,6 +5,7 @@ import {calculateMonthlyTable, SingleMonth, MetaData, InvestmentCalculatorResult
 import InvestmentTable from "../components/InvestmentTable.tsx";
 import {InvestmentGraph} from "../components/InvestmentGraph.tsx";
 import {ResultDisplay} from "../components/ResultDisplay.tsx";
+import InputSlider from "../components/Slider.tsx";
 
 export function InvestmentCalculator() {
 
@@ -56,7 +57,7 @@ export function InvestmentCalculator() {
                         tooltipText={"How much money you will add monthly"}
                     />
                 </Grid2>
-                <Grid2 size={6}>
+                <Grid2 size={3}>
                     <NumberInputField
                         id={"interestRate"}
                         label={"Interest Rate"}
@@ -65,13 +66,16 @@ export function InvestmentCalculator() {
                         tooltipText={"The interest rate you expect to earn on your investment"}
                     />
                 </Grid2>
-                <Grid2 size={6}>
-                    <NumberInputField
+                <Grid2 size={9}>
+                    <InputSlider
                         id={"yearsToGrow"}
                         label={"Years to grow"}
                         value={yearsToGrow}
                         onChange={setYearsToGrow}
                         tooltipText={"How long you will hold your investment"}
+                        min={0}
+                        max={80}
+                        step={1}
                     />
                 </Grid2>
                 <Grid2 size={12}>
